@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SeriesFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Serie;
+use App\Services\SerieCreator;
+use App\Services\SerieRemover;
 
 class SeriesController extends Controller
 {
+
+
     //Create public function index
     public function index(Request $request)
     {
@@ -25,28 +29,38 @@ class SeriesController extends Controller
     }
 
     //Create public function store
-    public function store(SeriesFormRequest $request)
+    public function store(SeriesFormRequest $request, SerieCreator $serieCreator)
     {
 
-        //get series name from request
         $name = $request->name;
-        //create new serie with name
-        $serie = Serie::create(['name' => $name]);
+        $seasons_quantity = $request->seasons_quantity;
+        $episodes_quantity = $request->episodes_quantity;
+
+        $serie = $serieCreator->createSerie($name, $seasons_quantity, $episodes_quantity);
+
         //create session message
-        $request->session()->flash('message', "A Série {$serie->name} foi adicionada com sucesso!");
+        $request->session()->flash('message', "A Série {$serie->name}, suas temporadas e episódios foram adicionada com sucesso!");
 
         //return to the index
         return redirect()->route('series_list');
     }
 
     //Create public function destroy
-    public function destroy(Request $request)
+    public function destroy(Request $request, SerieRemover $serieRemover)
     {
-        //destroy serie with $request->id
-        Serie::destroy($request->id);
+        $serieName = $serieRemover->remove($request->id);
+
         //create session message
-        $request->session()->flash('message', "A Série {$request->name} foi removida com sucesso!");
+        $request->session()->flash('message', "A Série $serieName foi removida com sucesso!");
         //return to the index
         return redirect()->route('series_list');
+    }
+
+    public function editName(Request $request)
+    {
+        $newName = $request->name;
+        $serie = Serie::find($request->id);
+        $serie->name = $newName;
+        $serie->save();
     }
 }

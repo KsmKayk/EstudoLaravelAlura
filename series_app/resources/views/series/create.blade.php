@@ -1,28 +1,29 @@
 @extends('layout')
 
 @section('header')
-    Adicionar Série
+Adicionar Série
 @endsection
 
 @section('content')
-    <!-- create if showing errors -->
-    @if ($errors->any())
-        <div class="alert alert-danger mb-2">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+@include('error', ['errors' => $errors])
 
-    <form method="post">
-        @csrf
-        <div class="form-group mb-3">
-            <label for="name" class="">Nome</label>
+<form method="post">
+    @csrf
+    <div class="row mb-3">
+        <div class="col col-8">
+            <label for="name">Nome</label>
             <input type="text" class="form-control" name="name" id="name">
         </div>
+        <div class="col col-2">
+            <label for="seasons_quantity">N* temporadas</label>
+            <input type="number" class="form-control" name="seasons_quantity" id="seasons_quantity">
+        </div>
+        <div class="col col-2">
+            <label for="episodes_quantity">N* episodios</label>
+            <input type="number" class="form-control" name="episodes_quantity" id="episodes_quantity">
+        </div>
+    </div>
 
-        <button class="btn btn-outline-primary">Adicionar</button>
-    </form>
+    <button class="btn btn-outline-primary">Adicionar</button>
+</form>
 @endsection

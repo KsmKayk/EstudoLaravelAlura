@@ -13,6 +13,19 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
+        <div class="container-fluid">
+            <a class="ml-3 navbar-brand" href="{{route('series_list')}}">Início</a>
+            @auth
+            <a href="/signout" class="text-danger">Sair</a>
+            @endauth
+            @guest
+            <a href="/signin">Entrar</a>
+            @endguest
+
+        </div>
+    </nav>
+
     <div class="container">
         <div class="h-100 p-5 text-white bg-dark rounded-3 mt-2 mb-4">
             <h1>@yield('header')</h1>
