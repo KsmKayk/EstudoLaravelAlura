@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
+use DB;
 use App\Models\{Serie, Season};
 
 class SerieCreator
@@ -17,7 +17,7 @@ class SerieCreator
         return $serie;
     }
 
-    private function createSeason(Serie $serie, int $episodes_quantity, int $seasons_quantity,)
+    private function createSeason(Serie $serie, int $episodes_quantity, int $seasons_quantity)
     {
         for ($i = 1; $i <= $seasons_quantity; $i++) {
             $season = $serie->seasons()->create(['number' => $i]);
