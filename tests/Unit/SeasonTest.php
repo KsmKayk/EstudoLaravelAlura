@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Season;
 use App\Models\Episode;
 
-class seasonTest extends TestCase
+class SeasonTest extends TestCase
 {
     /** @var Season */
     private $season;
