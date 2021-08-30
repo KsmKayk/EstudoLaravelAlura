@@ -52,3 +52,7 @@ Route::get('/signout', function () {
 Route::get('/', function () {
     return redirect()->route('series_list');
 });
+
+Route::get('/show-mail', function () {
+    return new \App\Mail\NewSerie('Arrow', 7, 20);
+});
