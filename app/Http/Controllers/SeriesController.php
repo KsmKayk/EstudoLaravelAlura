@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Serie;
 use App\Services\SerieCreator;
 use App\Services\SerieRemover;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewSerie;
+use App\Models\User;
 
 class SeriesController extends Controller
 {
@@ -37,6 +40,14 @@ class SeriesController extends Controller
         $episodes_quantity = $request->episodes_quantity;
 
         $serie = $serieCreator->createSerie($name, $seasons_quantity, $episodes_quantity);
+
+        $users = User::All();
+        foreach ($users as $user) {
+            $email = new NewSerie($name, $seasons_quantity, $episodes_quantity);
+            $email->subject = 'Nova Série adicionada!';
+            Mail::to($user)->send($email);
+            sleep(5);
+        }
 
         //create session message
         $request->session()->flash('message', "A Série {$serie->name}, suas temporadas e episódios foram adicionada com sucesso!");

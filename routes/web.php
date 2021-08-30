@@ -6,6 +6,9 @@ use App\Http\Controllers\SeasonsController;
 use App\Http\Controllers\EpisodesController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewSerie;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,5 +57,16 @@ Route::get('/', function () {
 });
 
 Route::get('/show-mail', function () {
-    return new \App\Mail\NewSerie('Arrow', 7, 20);
+    return new NewSerie('Arrow', 7, 20);
+});
+
+Route::get('/send-mail', function () {
+    $email = new NewSerie('arrow', 1, 1);
+    $user = (object)[
+        'email' => 'kayk@test.com',
+        'name' => 'Kayk'
+    ];
+    $email->subject = 'Nova Série adicionada!';
+    Mail::to($user)->send($email);
+    return 'Email enviado';
 });
