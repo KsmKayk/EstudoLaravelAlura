@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewSerie as EventsNewSerie;
 use App\Http\Requests\SeriesFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Serie;
@@ -41,14 +42,10 @@ class SeriesController extends Controller
 
         $serie = $serieCreator->createSerie($name, $seasons_quantity, $episodes_quantity);
 
-        $users = User::All();
-        foreach ($users as $index => $user) {
-            $multiplyer = $index + 1;
-            $email = new NewSerie($name, $seasons_quantity, $episodes_quantity);
-            $email->subject = 'Nova Série adicionada!';
-            $when = now()->addSeconds($multiplyer * 10);
-            Mail::to($user)->later($when, $email);
-        }
+        $newSerieEvent = new EventsNewSerie($name, $seasons_quantity, $episodes_quantity);
+        event($newSerieEvent);
+
+
 
         //create session message
         $request->session()->flash('message', "A Série {$serie->name}, suas temporadas e episódios foram adicionada com sucesso!");
