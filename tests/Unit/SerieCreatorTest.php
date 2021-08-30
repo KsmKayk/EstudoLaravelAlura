@@ -7,9 +7,11 @@ use App\Models\Season;
 use App\Models\Episode;
 use App\Models\Serie;
 use App\Services\SerieCreator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SerieCreatorTest extends TestCase
 {
+    use RefreshDatabase;
 
     public function testSerieCreator()
     {
