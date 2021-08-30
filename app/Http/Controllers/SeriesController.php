@@ -42,11 +42,12 @@ class SeriesController extends Controller
         $serie = $serieCreator->createSerie($name, $seasons_quantity, $episodes_quantity);
 
         $users = User::All();
-        foreach ($users as $user) {
+        foreach ($users as $index => $user) {
+            $multiplyer = $index + 1;
             $email = new NewSerie($name, $seasons_quantity, $episodes_quantity);
             $email->subject = 'Nova Série adicionada!';
-            Mail::to($user)->send($email);
-            sleep(5);
+            $when = now()->addSeconds($multiplyer * 10);
+            Mail::to($user)->later($when, $email);
         }
 
         //create session message
